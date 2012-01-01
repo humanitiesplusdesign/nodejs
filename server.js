@@ -4,14 +4,15 @@
 var http = require("http");
 var url = require("url");
 var fs = require('fs');
-var sys = require('sys')
+//var sys = require('sys')
 var sys = require('util')
 var spawn = require('child_process').spawn;
 
 function main(){
     config = fs.readFileSync("config.json", "ascii");
     config = JSON.parse(config);
-    console.log("DEBUG Gdb:", Gdb);
+    console.log("DEBUG Gdb.Person:", Gdb.Person.collectionName);
+    console.log("DEBUG Gdb.Place:", Gdb.Place.collectionName);
 
     server = http.createServer(function(request, response){
         var purl = url.parse(request.url, true);
