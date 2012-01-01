@@ -17,21 +17,30 @@ function main(){
     server = http.createServer(function(request, response){
         var purl = url.parse(request.url, true);
         
-        // ok, look at query string
-        var resp = JSON.stringify({
-            error: "unknown args in " + request.url
-        });
-        var qargs = purl.query;
-        console.log("qargs:", qargs);
-        
-        // action=query
-        if ("action" in qargs && qargs.action == "query") {
-            response.writeHead(200, {
-                "Content-Type": "image/png"
+        try {
+            var resp = JSON.stringify({error:"unknown args in " + request.url});
+            // ok, look at query string
+            var resp = JSON.stringify({
+                error: "unknown args in " + request.url
             });
-            response.write("that was fun");
+            var qargs = purl.query;
+            console.log("qargs:", qargs);
+            
+            // action=query
+            if ("action" in qargs && qargs.action == "query") {
+                resp = "that was fun!"
+            }
+            // default response is resp as text/plain
+            response.writeHead(200, {
+                "Content-Type": "text/plain"
+            });
+            response.write(resp);
             response.end();
-            return; // not an ajaj response, raw png data
+        } 
+        catch (err) {
+            console.log("ERROR in createServer:", err);
+            response.write("" + err);
+            response.end();
         }
     });
     server.listen(config.port);
